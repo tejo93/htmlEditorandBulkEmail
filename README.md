@@ -73,4 +73,4 @@ We have estimated 45 days for the entire project to complete based on our curren
 
 Gnatt chart:
 
-![](screenshots/gantt.PNG	)
+![](screenshots/gantt.PNG)
