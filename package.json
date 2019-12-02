@@ -1,0 +1,16 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "elasticemail-webapiclient": "^2.0.8-s",
+    "http-server": "^0.11.1",
+    "requirejs": "^2.3.6"
+  }
+}

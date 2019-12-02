@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+      <title>Send Bulk Email</title>
+      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+      <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+      <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+      <style type="text/css" media="all">
+         @import "css/main.css";
+         @import "css/widgEditor.css";
+      </style>
+      <script type="text/javascript" src="scripts/widgEditor.js"></script>
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/jquery-1.12.1.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+      <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Bubblegum+Sans" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
+   </head>
+   <body>
+      <div id="SendEmailModal" class="" style="padding-top:40px;padding-bottom:20px;">
+         <h1 style="font-size:44px;font-family:'Poiret One';font-weight:bold;">Send Bulk Emails</h1>
+         <form id="postform" style="padding-top:20px;" method="POST" action="javascript:sendEmail();" accept-charset="utf-8">
+            <span style="font-style:bold;">To:</span><br>
+            <textarea id="toemails" name="toemails"  placeholder="Input Emails here, separate by ," rows="10"></textarea>
+            <br>
+            <span style="font-style:bold;">From:</span>
+            <input class="textinput" id="fromemail" name="fromemail" value="tejorocks@gmail.com" disabled>
+            <br><br>
+            <input class="textinput" type="hidden" id="email" name="email">
+            <br>
+            Subject:<br>
+            <input class="textinput" id="subject" name="subject">
+            <br><br>
+            <br>
+            <br>	 
+            <input type="file" id="imgupload" accept=".jpg,.png,.gif,.jpeg" style="display:none" onchange="readURL(this);"/>          
+            <fieldset>
+               <label for="noise">
+               Message (in HTML format):
+               </label>
+               <textarea id="noise" name="noise" class="widgEditor nothing">&lt;p&gt;HTML Editor &lt;strong&gt;automatically&lt;/strong&gt; integrates the content that was in the textarea!&lt;/p&gt;</textarea>
+            </fieldset>
+            <br><br>
+            Your Secret Key?
+            <input type="password" name="pwd" id="pwd">
+            <br><br>
+            <input type="Submit" id="sendemailbtn" name="sendemailbtn" 
+               class="form-submit-button"      							
+               placeholder= "Input Your HTML code here"
+               value="Submit">
+            <br><br>      					
+         </form>
+      </div>
+      <div style="padding-top:20px;padding-bottom:20px;">
+      </div>
+      <script>
+         function sendEmail() {
+
+            var api = document.getElementById("pwd").value;
+            var eeEmailSend = "https://api.elasticemail.com/v2/email/send";
+            var eeEmailStatus = "https://api.elasticemail.com/v2/email/status";
+            var emailsList = $("#toemails").val().split(',');
+            var counter = 0;
+            const modalNode = $('#emailStatus tbody')[0];
+            while (modalNode.firstChild) {
+                  modalNode.removeChild(modalNode.firstChild);
+            }
+            var emailStatusList = {};
+            for (var i = 0; i < emailsList.length; i++) {
+                  var emailObject = {
+                        "#": i,
+                        "Email": emailsList[i],
+                        "Status": "<img src='images/failure.png' />"
+                  }
+                  emailStatusList[emailsList[i]]=emailObject;
+                  jQuery.post(eeEmailSend, {
+                        'from' : document.getElementById('fromemail').value,
+                        'apikey' : api,
+                        'subject' :document.getElementById('subject').value,
+                        'to' :emailObject.Email,
+                        'bodyHtml' : document.getElementById('noise').value
+                  }, function () { }, "json").done(function (result) {
+                        if (result.success == true) {
+                              var emailStatusRequest = {
+                                    'messageID' : result.data.messageid,
+                                    'apikey' : api                                    
+                              };
+                              jQuery.post(eeEmailStatus,emailStatusRequest, function () { }, "json").done(
+                                    function (statusResult) {
+                                          
+                                    if (statusResult.success == true) {
+                                          
+                                          if (statusResult.data.statusname == "Sent" || statusResult.data.statusname == "ReadyToSend") {
+                                                emailStatusList[statusResult.data.to].Status = "<img src='images/success.png' />"
+                                          } else {
+                                                emailStatusList[statusResult.data.to].Status = "<img src='images/failure.png' />"
+                                          }
+                                          counter++;
+
+                                          if (counter == emailsList.length) {
+                                                var tbody = $('#emailStatus tbody'),
+                                                      props = ["#", "Email", "Status"];
+                                                $.each(emailStatusList, function (i, email) {
+                                                      var tr = $('<tr>');
+                                                      $.each(props, function (i, prop) {
+                                                            $('<td>').html(email[prop]).appendTo(tr);
+                                                      });
+                                                      tbody.append(tr);
+                                                });
+                                                $('#exampleModal').modal() // initialized with defaults
+                                                $('#exampleModal').modal({
+                                                      keyboard: false
+                                                }) // initialized with no keyboard
+                                                $('#exampleModal').modal('show') // initializes and invokes show immediately
+                                          }
+                                    }
+                                    else
+                                    {
+                                        counter++;
+
+                                          if (counter == emailsList.length) {
+                                                var tbody = $('#emailStatus tbody'),
+                                                      props = ["#", "Email", "Status"];
+                                                $.each(emailStatusList, function (i, email) {
+                                                      var tr = $('<tr>');
+                                                      $.each(props, function (i, prop) {
+                                                            $('<td>').html(email[prop]).appendTo(tr);
+                                                      });
+                                                      tbody.append(tr);
+                                                });
+                                                $('#exampleModal').modal() // initialized with defaults
+                                                $('#exampleModal').modal({
+                                                      keyboard: false
+                                                }) // initialized with no keyboard
+                                                $('#exampleModal').modal('show') // initializes and invokes show immediately
+                                          }
+                                    }
+
+                              }).fail(function () {
+                                          
+                              });
+                        }else
+                                    {
+                                        counter++;
+
+                                          if (counter == emailsList.length) {
+                                                var tbody = $('#emailStatus tbody'),
+                                                      props = ["#", "Email", "Status"];
+                                                $.each(emailStatusList, function (i, email) {
+                                                      var tr = $('<tr>');
+                                                      $.each(props, function (i, prop) {
+                                                            $('<td>').html(email[prop]).appendTo(tr);
+                                                      });
+                                                      tbody.append(tr);
+                                                });
+                                                $('#exampleModal').modal() // initialized with defaults
+                                                $('#exampleModal').modal({
+                                                      keyboard: false
+                                                }) // initialized with no keyboard
+                                                $('#exampleModal').modal('show') // initializes and invokes show immediately
+                                          }
+                                    }
+                  }).fail(function () {
+                        // Do something here if it fails...
+                  });
+
+            }
+
+}
+         
+      </script>
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Email Status</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <table class="table table-striped" id="emailStatus">
+                     <thead>
+                        <tr>
+                           <th scope="col">#</th>
+                           <th scope="col">Email</th>
+                           <th scope="col">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                     </tbody>
+                  </table>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
