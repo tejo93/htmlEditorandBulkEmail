@@ -1,3 +1,21 @@
+Project name: HTML Editor and Bulk Email
+
+Description: To develop a fully functional and user interactive online html editor with bulk email which can broadcast a single message to multiple recipients.
+
+Installation: Node.js is a JavaScript-based environment which you can use to create web-servers and networked applications. You can also use it to perform helpful tasks on your computer such as concatenating and minifying JavaScript files and compiling Sass files into CSS. NPM is a “package manager” that makes installing Node “packages” fast and easy. NPM is installed when you install Node.js®
+
+Steps:
+1) Download the Windows installer from Nodejs.org. 
+2) Run the installer (the .msi file you downloaded in the previous step.) 
+3) Follow the prompts in the installer (Accept the license agreement, click the NEXT button a bunch of times and accept the default installation settings). 
+4) Restart your computer. You won’t be able to run Node.js until you restart your computer.
+
+Test It: Make sure you have Node and NPM installed by running simple commands to see what version of each is installed:
+
+Test Node: To see if Node is installed, open the Windows Command Prompt, Powershell or a similar command line tool, and type node -v. This should print the version number so you’ll see something like this v0.10.35.
+
+Test NPM: To see if NPM is installed, type npm -v in Terminal. This should print the version number so you’ll see something like this 1.4.28
+
 Starting a server:
 
 A Node.js server makes your app available to serve HTTP requests. It provides the interaction between users and your application.
