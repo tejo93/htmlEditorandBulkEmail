@@ -94,6 +94,9 @@ Workflow Diagram:
 
 
 We have estimated 45 days for the entire project to complete based on our current progress and remaining tasks.
+We are 2 person team, and per day we invested 2 hours per person on average. 
+
+Overall we have 90 hours per person cost estimated.
 ![](screenshots/tasks.png)
 
 Gnatt chart:
