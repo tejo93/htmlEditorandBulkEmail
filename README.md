@@ -65,7 +65,9 @@ Normal Flow of Events –
 
 ![Use case diagram](screenshots/usecase.png)
 
-![workflow diagram](screenshots/workflow.png)
+Workflow Diagram:
+
+![workflow diagram](screenshots/work.png)
 
 
 We have estimated 45 days for the entire project to complete based on our current progress and remaining tasks.
