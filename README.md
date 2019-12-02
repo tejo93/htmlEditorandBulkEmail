@@ -5,7 +5,7 @@ In a file app.js, create and save the following server-creation code:
 In your terminal, run the command:
 $ node app.js
 and visit http://localhost:8080 in your browser.
-![](screenshots/serverstart.PNG)
+![](screenshots/serverstart.jpeg)
 
 
 ![](screenshots/gantt.PNG	)
