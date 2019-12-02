@@ -1,4 +1,5 @@
 Starting a server:
+
 A Node.js server makes your app available to serve HTTP requests. It provides the interaction between users and your application.
 Creating and starting a server is easy with Node.js's built-in http module.
 In a file app.js, create and save the following server-creation code:
