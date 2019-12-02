@@ -2,6 +2,11 @@ Project name: HTML Editor and Bulk Email
 
 Description: To develop a fully functional and user interactive online html editor with bulk email which can broadcast a single message to multiple recipients.
 
+Technologies to be used
+Application Language- Javascript/ HTML/Jquery
+Development tool-VScode
+Web Deployment Server-nodejs
+
 Installation: Node.js is a JavaScript-based environment which you can use to create web-servers and networked applications. You can also use it to perform helpful tasks on your computer such as concatenating and minifying JavaScript files and compiling Sass files into CSS. NPM is a “package manager” that makes installing Node “packages” fast and easy. NPM is installed when you install Node.js®
 
 Steps:
