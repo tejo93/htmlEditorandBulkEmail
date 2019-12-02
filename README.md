@@ -9,8 +9,8 @@ and visit http://localhost:8080 in your browser.
 
 ![](screenshots/serverstart.jpeg)
 
-We have estimated 45 days for the entire project to complete based on our current progress and remaining tasks.
 
+We have estimated 45 days for the entire project to complete based on our current progress and remaining tasks.
 ![](screenshots/tasks.png)
 
 Gnatt chart:
